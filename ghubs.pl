@@ -11,6 +11,17 @@ use Getopt::ArgParse;
 use Data::Dumper;
 use Cwd;
 
+sub header
+{
+    print "=" x 40 . "\n";
+    print "  GHubS - version 0.01\n";
+    print "  made by zc00l\n";
+    print "=" x 40 . "\n";
+    return 0;
+}
+
+header;
+
 # Json object creation
 my $json = JSON->new->allow_nonref;
 
@@ -33,15 +44,6 @@ my $github_api = "https://api.github.com";
 my $ua = LWP::UserAgent->new;
 my $OAuth2_token = $args->token;
 my $repo_data = undef;
-
-sub header
-{
-    print "=" x 20;
-    print "  GHubS - version 0.01\n";
-    print "  made by zc00l\n";
-    print "=" x 20;
-    return 0;
-}
 
 sub get_blacklisted
 {
@@ -189,7 +191,6 @@ sub main()
     foreach my $children ( @children_pids ) {
         waitpid($children, 0);
     }
-    print ""
     return 0;
 }
 
