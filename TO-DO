@@ -1,4 +1,0 @@
-168: Add a report log for all the queried repositories found.
-
-New: Add option to query for private repositories too.
-    (?type=private passed in GET Parameter.)
