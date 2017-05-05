@@ -13,7 +13,8 @@ To install the program and download all dependencies, simply run the install scr
 ```
 
 ## Usage instructions
-*First, you'll need a OAuth2 token for authentication to the GitHub API. You can get one at 'Settings' in Github website.*
+_First, you'll need a OAuth2 token for authentication to the GitHub API. You can get one at 'Settings' in Github website._
+
 To see the available options, type `./ghubs.pl -h`
 
 To download all repositories from user `xxx`, type:
