@@ -35,6 +35,7 @@ $ap->add_arg('--user', '-u', help=>'User to query for repositories', required=> 
 $ap->add_arg('--token', '-t', help=>'OAuth2 token to use for authentication', required=>1);
 $ap->add_arg('--blacklist', '-b', help=>'Blacklist file of unwanted repositories', required=>0);
 $ap->add_arg('--local', '-l', help=> 'Local folder to download files', required=>0);
+$ap->add_arg('--private', '-p', help=> 'Sync private repositories. Default: Public only', required=> 0, type=> 'Bool');
 my $args = $ap->parse_args( @ARGV );
 
 # Program global variables
@@ -88,7 +89,16 @@ sub get_repo_data()
 {
     my $user = $args->user;
     my $data_size;
-    my $req = HTTP::Request->new(GET => $github_api . "/users/$user/repos?type=all");
+    my $req;
+    if ( $args->private ) {
+        print "[+] Fetching private repositories ...\n";
+        $req = HTTP::Request->new(GET => $github_api . "/user/repos?type=private");
+        $req->header('Authorization' => "token " . $OAuth2_token);
+    } else {
+        $req = HTTP::Request->new(GET => $github_api . "/users/$user/repos?type=all");
+        $req->header('Authorization' => "token " . $OAuth2_token);
+    }
+
     #my $req = HTTP::Request->new(GET => $github_api . "/user/repos?type=owner");
     #$req->header('Authorization' => "token " . $OAuth2_token);
     my $resp = $ua->request( $req );
@@ -115,7 +125,6 @@ sub work
     }
 
     if ( (-e $name) && (-d $name) ) {
-        print "[!] Updating $name repository ...\n";
         chdir $name;
         system(`git pull origin $branch > /dev/null 2>&1`);
         #print "git pull origin $branch\n";
@@ -192,7 +201,7 @@ sub main()
         if (not $pid) {
             check_blacklist $git_name;
             work $git_url, $git_name, $git_branch;
-            print "[*] Repository $git_name has been cloned.\n";
+            print "[*] Repository $git_name has been synchronized.\n";
             exit 0;
         } else {
             push @children_pids, $pid;
