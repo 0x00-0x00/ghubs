@@ -4,7 +4,7 @@
 # from github.com using GitHub API.
 # ====================================================================
 
-use strict; use warnings;
+use strict;
 use LWP::UserAgent;
 use JSON;
 use Getopt::ArgParse;
@@ -168,6 +168,7 @@ sub control
     if ( $proc_num > $max_proc ) {
         my $pid = waitpid(-1, 0);
         pop @children_pids, $pid;
+
     }
     return 0;
 }
