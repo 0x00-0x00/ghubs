@@ -47,7 +47,7 @@ sub install_all
         }
     }
 
-    print "[*] Waiting for children process to terminate ..."
+    print "[*] Waiting for children process to terminate ...";
     foreach my $children ( @children_pids ) {
         waitpid($children, 0);
     }
